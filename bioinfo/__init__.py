@@ -21,7 +21,7 @@ from docopt import docopt
 from .calc_bwa_cover import calc_bwa_coverage
 
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __author__ = "Luiz Irber"
 __license__ = "MIT"
 
