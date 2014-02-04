@@ -1,0 +1,2 @@
+-r requirements.txt
+bumpversion==0.4.0
