@@ -38,7 +38,7 @@ setup(
     author='Luiz Irber',
     author_email='luiz@luizirber.org',
     url='https://github.com/luizirber/bioinfo',
-    install_requires=['docopt'],
+    install_requires=['docopt', 'tqdm'],
     license=read("LICENSE"),
     zip_safe=False,
     keywords='bioinfo',
@@ -54,7 +54,6 @@ setup(
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy'
     ],
-    py_modules=["bioinfo"],
     entry_points={
         'console_scripts': [
             "bioinfo = bioinfo:main"

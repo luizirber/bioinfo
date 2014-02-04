@@ -1,0 +1,6 @@
+docopt==0.6.1
+tqdm==1.0
+
+# calc_bwa_coverage
+pysam==0.7.7
+screed==0.7.1
