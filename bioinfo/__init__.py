@@ -21,7 +21,7 @@ from docopt import docopt
 from .bam_coverage import bam_coverage
 
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __author__ = "Luiz Irber"
 __license__ = "BSD License"
 
