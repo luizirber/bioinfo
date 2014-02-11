@@ -80,4 +80,4 @@ if __name__ == "__main__":
     query = sys.argv[4]
     min_mapq = int(sys.argv[5])
 
-    calc_bam_coverage(reference, alignments, min_match, query, min_mapq=30)
+    bam_coverage(reference, alignments, min_match, query, min_mapq=30)
