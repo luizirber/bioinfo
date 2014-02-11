@@ -2,10 +2,10 @@
 """
 Usage:
 
-   calc-bwa-cover.py reference.fa query.x.reference.blastn minmatch query.fa
+   bam-coverage.py reference.fa query.x.reference.bam minmatch query.fa mapq
 
-calc-blast-cover calculates the fraction of bases in 'reference.fa' that are
-covered by BLAST matches from 'query.fa', for sequence in 'query.fa' that are
+bam-coverage calculates the fraction of bases in 'reference.fa' that are
+covered by a BAM alignment file, for sequence in 'query.fa' that are
 longer than 'minmatch'.
 """
 
@@ -14,12 +14,12 @@ import screed
 from tqdm import tqdm
 
 
-def calc_bwa_coverage(reference, bwa_alignments, min_match, query, min_mapq=30):
+def bam_coverage(reference, alignments, min_match, query, min_mapq=30):
 
     # load in the query sequences into a list
     print "reading query"
-    query_seqs = set([record.name for record in tqdm(screed.open(query), leave=True)
-                      if len(record.sequence) >= min_match])
+    query_seqs = set([r.name for r in tqdm(screed.open(query), leave=True)
+                      if len(r.sequence) >= min_match])
     print
 
     # create empty lists representing the total number of bases in the
@@ -33,7 +33,7 @@ def calc_bwa_coverage(reference, bwa_alignments, min_match, query, min_mapq=30):
     # run through the BAM records in the query, and calculate how much of
     # the reference is covered by the query.
     print 'building coverage'
-    with pysam.Samfile(bwa_alignments, "rb") as samfile:
+    with pysam.Samfile(alignments, "rb") as samfile:
         for record in tqdm(samfile, leave=True):
 
             if record.qname not in query_seqs:
@@ -67,5 +67,17 @@ def calc_bwa_coverage(reference, bwa_alignments, min_match, query, min_mapq=30):
     print 'total ref bases covered :', coved
     print 'fraction                :', coved / float(total)
     print 'reference               :', reference
-    print 'bwa alignment file      :', bwa_alignments
+    print 'BAM alignment file      :', alignments
     print 'query sequences         :', query
+
+
+if __name__ == "__main__":
+    import sys
+
+    reference = sys.argv[1]
+    alignments = sys.argv[2]
+    min_match = int(sys.argv[3])
+    query = sys.argv[4]
+    min_mapq = int(sys.argv[5])
+
+    calc_bam_coverage(reference, alignments, min_match, query, min_mapq=30)
