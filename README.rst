@@ -27,4 +27,4 @@ Requirements
 License
 -------
 
-MIT licensed. See the bundled `LICENSE <https://github.com/luizirber/bioinfo/blob/master/LICENSE>`_ file for more details.
+BSD licensed. See the bundled `LICENSE <https://github.com/luizirber/bioinfo/blob/master/LICENSE>`_ file for more details.
