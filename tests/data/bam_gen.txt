@@ -1,0 +1,6 @@
+ bwa index bam_ref.fasta
+ samtools faidx bam_ref.fasta
+ bwa mem bam_ref.fasta bam_query.fasta > bam_align.sam
+ samtools import bam_ref.fasta.fai bam_align.sam bam_align.bam
+ samtools sort bam_align.bam bam_align.sorted
+ samtools index bam_align.sorted.bam
