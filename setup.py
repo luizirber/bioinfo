@@ -42,6 +42,7 @@ setup(
     license=read("LICENSE"),
     zip_safe=False,
     keywords='bioinfo',
+    packages=['bioinfo'],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
