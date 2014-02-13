@@ -34,8 +34,13 @@ class TestBamConverage(unittest.TestCase):
                            "data/bam_query.fasta",
                            "--mapq=30")
         self.assertEquals(ret.returncode, 0)
-        self.assertIn('bam_coverage', ret.stdout)
-
+        for line in ret.stdout:
+            if 'total bases in reference' in line:
+                self.assertIn('237', line)
+            if 'total ref bases covered' in line:
+                self.assertIn('57', ret.stdout)
+            if 'fraction' in line:
+                self.assertIn('0.24', ret.stdout)
 
 if __name__ == '__main__':
     unittest.main()
