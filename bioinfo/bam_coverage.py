@@ -7,6 +7,8 @@ Usage:
 bam-coverage calculates the fraction of bases in 'reference.fa' that are
 covered by a BAM alignment file, for sequence in 'query.fa' that are
 longer than 'minmatch'.
+
+Original script: https://github.com/ngs-docs/ngs-scripts/blob/master/blast/calc-blast-cover.py
 """
 
 from __future__ import print_function, division
@@ -96,15 +98,18 @@ def bam_coverage(reference, alignments, min_match, query, min_mapq=30):
         coved += this_cov
         total += len(covs[name])
         f = this_cov / float(len(covs[name]))
+    fraction = coved / float(total)
     print()
 
     print()
     print('total bases in reference:', total)
     print('total ref bases covered :', coved)
-    print('fraction                :', coved / float(total))
+    print('fraction                :', fraction)
     print('reference               :', reference)
     print('BAM alignment file      :', alignments)
     print('query sequences         :', query)
+
+    return total, coved, fraction
 
 
 if __name__ == "__main__":

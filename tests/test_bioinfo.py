@@ -17,6 +17,9 @@ class TestBamConverage(unittest.TestCase):
         self.env = TestFileEnvironment()
         shutil.copytree(os.path.join(os.path.dirname(__file__), 'data'),
                         os.path.join(self.env.base_path, 'data'))
+        self.total = 237
+        self.coved = 57
+        self.fraction = 0.24
 
     def tearDown(self):
         self.env.clear()
@@ -41,22 +44,25 @@ class TestBamConverage(unittest.TestCase):
 
         for line in ret.stdout.split('\n'):
             if 'total bases in reference' in line:
-                self.assertIn('237', line)
+                self.assertIn(str(self.total), line)
             if 'total ref bases covered' in line:
-                self.assertIn('57', ret.stdout)
+                self.assertIn(str(self.coved), ret.stdout)
             if 'fraction' in line:
-                self.assertIn('0.24', ret.stdout)
+                self.assertIn(str(self.fraction), ret.stdout)
 
     def test_complete_run_module(self):
         from bioinfo import bam_coverage
 
-        bam_coverage(
+        total, coved, fraction = bam_coverage(
             os.path.join('tests', 'data', 'bam_ref.fasta'),
             os.path.join('tests', 'data', 'bam_align.sorted.bam'),
             10,
             os.path.join('tests', 'data', 'bam_query.fasta'),
             30
         )
+        self.assertEqual(total, self.total)
+        self.assertEqual(coved, self.coved)
+        self.assertAlmostEqual(fraction, self.fraction, places=2)
 
     def test_check_dependencies(self):
         import bioinfo
@@ -72,6 +78,7 @@ class TestBamConverage(unittest.TestCase):
                 os.path.join('tests', 'data', 'bam_query.fasta'),
                 30
             )
+
         bioinfo.bam_coverage_mod.DEPENDENCIES['pysam'] = True
 
 
