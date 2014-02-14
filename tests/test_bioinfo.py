@@ -47,8 +47,9 @@ class TestBamConverage(unittest.TestCase):
             if 'fraction' in line:
                 self.assertIn('0.24', ret.stdout)
 
-    def test_comple_run_module(self):
+    def test_complete_run_module(self):
         from bioinfo import bam_coverage
+
         bam_coverage(
             os.path.join('tests', 'data', 'bam_ref.fasta'),
             os.path.join('tests', 'data', 'bam_align.sorted.bam'),
@@ -56,6 +57,22 @@ class TestBamConverage(unittest.TestCase):
             os.path.join('tests', 'data', 'bam_query.fasta'),
             30
         )
+
+    def test_check_dependencies(self):
+        import bioinfo
+        from bioinfo import bam_coverage
+
+        bioinfo.bam_coverage_mod.DEPENDENCIES['pysam'] = False
+
+        with self.assertRaises(SystemExit):
+            bam_coverage(
+                os.path.join('tests', 'data', 'bam_ref.fasta'),
+                os.path.join('tests', 'data', 'bam_align.sorted.bam'),
+                10,
+                os.path.join('tests', 'data', 'bam_query.fasta'),
+                30
+            )
+        bioinfo.bam_coverage_mod.DEPENDENCIES['pysam'] = True
 
 
 if __name__ == '__main__':

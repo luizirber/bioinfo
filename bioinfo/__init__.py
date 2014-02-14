@@ -18,6 +18,8 @@ Options:
 from __future__ import unicode_literals, print_function, division
 from docopt import docopt
 
+import bam_coverage as bam_coverage_mod
+
 from .bam_coverage import bam_coverage
 
 
