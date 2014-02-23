@@ -51,7 +51,7 @@ def check_dependencies():
     sys.exit(1)
 
 
-def bam_coverage(reference, alignments, min_match, query, min_mapq=30):
+def bam_coverage(reference, alignments, min_match, query, min_mapq=30, min_len=0):
     check_dependencies()
 
     # load in the query sequences into a list
@@ -82,6 +82,9 @@ def bam_coverage(reference, alignments, min_match, query, min_mapq=30):
 
             cov = covs.get(samfile.getrname(record.tid))
             if not cov:
+                continue
+
+            if len(record.aligned_pairs) < min_len * len(record.seq):
                 continue
 
             for pos_read, pos_ref in record.aligned_pairs:

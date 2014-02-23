@@ -5,12 +5,13 @@
 Collection of scripts for bioinformatics problems.
 
 Usage:
-  bioinfo bam_coverage <reference> <alignments> <minmatch> <query> [--mapq=<n>]
+  bioinfo bam_coverage <reference> <alignments> <minmatch> <query> [--mapq=<n>] [--minlen=<n>]
   bioinfo -h | --help
   bioinfo --version
 
 Options:
   --mapq=<n>    Minimum MAPQ quality [default: 30].
+  --minlen=<n>  Minimum alignment length, as a percentage of read length. Max 1.0 [default: 0].
   -h --help     Show this screen.
   --version     Show version.
 '''
@@ -42,7 +43,8 @@ def main():
                      args['<alignments>'],
                      int(args['<minmatch>']),
                      args['<query>'],
-                     min_mapq=int(args['--mapq']))
+                     min_mapq=int(args['--mapq']),
+                     min_len=float(args['--minlen']))
 
 if __name__ == '__main__':
     main()
