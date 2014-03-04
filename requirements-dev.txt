@@ -8,4 +8,4 @@ nosexcover==1.0.8
 
 check-manifest==0.19
 pyroma==1.5
-bumpversion==0.4.0
+bumpversion==0.4.1
