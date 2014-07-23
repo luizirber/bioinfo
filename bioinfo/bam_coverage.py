@@ -43,10 +43,10 @@ def check_dependencies():
     if all(DEPENDENCIES[d] for d in DEPENDENCIES):
         return True
 
-    print("Missing dependencies, install before proceeding:")
+    print("Missing dependencies, install before proceeding:", file=sys.stderr)
     for dep, installed in DEPENDENCIES.items():
         if not installed:
-            print(dep)
+            print(dep, file=sys.stderr)
 
     sys.exit(1)
 
@@ -55,22 +55,22 @@ def bam_coverage(reference, alignments, min_match, query, min_mapq=30, min_len=0
     check_dependencies()
 
     # load in the query sequences into a list
-    print("reading query")
+    print("reading query", file=sys.stderr)
     query_seqs = set([r.name for r in tqdm(screed.open(query), leave=True)
                       if len(r.sequence) >= min_match])
-    print()
+    print(file=sys.stderr)
 
     # create empty lists representing the total number of bases in the
     # reference
-    print("creating empty lists")
+    print("creating empty lists", file=sys.stderr)
     covs = {}
     for record in tqdm(screed.open(reference), leave=True):
         covs[record.name] = [0] * len(record.sequence)
-    print()
+    print(file=sys.stderr)
 
     # run through the BAM records in the query, and calculate how much of
     # the reference is covered by the query.
-    print('building coverage')
+    print('building coverage', file=sys.stderr)
     with pysam.Samfile(alignments, "rb") as samfile:
         for record in tqdm(samfile, leave=True):
 
@@ -90,23 +90,22 @@ def bam_coverage(reference, alignments, min_match, query, min_mapq=30, min_len=0
             for pos_read, pos_ref in record.aligned_pairs:
                 if pos_ref:
                     cov[pos_ref] = 1
-    print()
+    print(file=sys.stderr)
 
     # print out summary statistics for each of the reference.
     coved = {}
     sizes = {}
     total = 0
     covered = 0
-    print('Summing stats')
+    print('Summing stats', file=sys.stderr)
     for name in tqdm(covs, leave=True):
         coved[name] = sum(covs[name])
         sizes[name] = float(len(covs[name]))
         covered += coved[name]
         total += sizes[name]
     fraction = covered / float(total or 1)
-    print()
+    print(file=sys.stderr)
 
-    print()
     print('total bases in reference:', total)
     print('total ref bases covered :', covered)
     print('fraction                :', fraction)
