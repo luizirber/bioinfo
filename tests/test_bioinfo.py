@@ -59,16 +59,16 @@ class TestBamConverage(unittest.TestCase):
     def test_complete_run_module(self):
         from bioinfo import bam_coverage
 
-        total, coved, fraction = bam_coverage(
+        result = bam_coverage(
             os.path.join('tests', 'data', 'bam_ref.fasta'),
             os.path.join('tests', 'data', 'bam_align.sorted.bam'),
             10,
             os.path.join('tests', 'data', 'bam_query.fasta'),
             30
         )
-        self.assertEqual(total, self.total)
-        self.assertEqual(coved, self.coved)
-        self.assertAlmostEqual(fraction, self.fraction, places=2)
+        self.assertEqual(result['total'], self.total)
+        self.assertEqual(result['covered'], self.coved)
+        self.assertAlmostEqual(result['fraction'], self.fraction, places=2)
 
     def test_check_dependencies(self):
         import bioinfo

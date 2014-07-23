@@ -84,7 +84,7 @@ def bam_coverage(reference, alignments, min_match, query, min_mapq=30, min_len=0
             if not cov:
                 continue
 
-            if len(record.aligned_pairs) < min_len * len(record.seq):
+            if min_len and len(record.aligned_pairs) < min_len * len(record.seq):
                 continue
 
             for pos_read, pos_ref in record.aligned_pairs:
@@ -93,26 +93,34 @@ def bam_coverage(reference, alignments, min_match, query, min_mapq=30, min_len=0
     print()
 
     # print out summary statistics for each of the reference.
-    coved = 0
+    coved = {}
+    sizes = {}
     total = 0
+    covered = 0
     print('Summing stats')
     for name in tqdm(covs, leave=True):
-        this_cov = sum(covs[name])
-        coved += this_cov
-        total += len(covs[name])
-        f = this_cov / float(len(covs[name]))
-    fraction = coved / float(total)
+        coved[name] = sum(covs[name])
+        sizes[name] = float(len(covs[name]))
+        covered += coved[name]
+        total += sizes[name]
+    fraction = covered / float(total or 1)
     print()
 
     print()
     print('total bases in reference:', total)
-    print('total ref bases covered :', coved)
+    print('total ref bases covered :', covered)
     print('fraction                :', fraction)
     print('reference               :', reference)
     print('BAM alignment file      :', alignments)
     print('query sequences         :', query)
 
-    return total, coved, fraction
+    return {
+        'total': total,
+        'covered': covered,
+        'fraction': fraction,
+        'coverage per contig': coved,
+        'contig size': sizes
+    }
 
 
 if __name__ == "__main__":
