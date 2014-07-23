@@ -24,7 +24,7 @@ from bioinfo import bam_coverage as bam_coverage_mod
 from bioinfo.bam_coverage import bam_coverage
 
 
-__version__ = "0.1.5"
+__version__ = "0.1.6"
 __author__ = "Luiz Irber"
 __license__ = "BSD License"
 
