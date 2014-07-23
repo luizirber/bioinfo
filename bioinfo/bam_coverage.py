@@ -16,8 +16,7 @@ import sys
 
 DEPENDENCIES = {
     "pysam": False,
-    "screed": False,
-    "tqdm": False,
+    "screed": False
 }
 
 try:
@@ -29,12 +28,6 @@ except ImportError:
 try:
     import screed
     DEPENDENCIES['screed'] = True
-except ImportError:
-    pass
-
-try:
-    from tqdm import tqdm
-    DEPENDENCIES['tqdm'] = True
 except ImportError:
     pass
 
@@ -56,23 +49,21 @@ def bam_coverage(reference, alignments, min_match, query, min_mapq=30, min_len=0
 
     # load in the query sequences into a list
     print("reading query", file=sys.stderr)
-    query_seqs = set([r.name for r in tqdm(screed.open(query), leave=True)
+    query_seqs = set([r.name for r in screed.open(query)
                       if len(r.sequence) >= min_match])
-    print(file=sys.stderr)
 
     # create empty lists representing the total number of bases in the
     # reference
     print("creating empty lists", file=sys.stderr)
     covs = {}
-    for record in tqdm(screed.open(reference), leave=True):
+    for record in screed.open(reference):
         covs[record.name] = [0] * len(record.sequence)
-    print(file=sys.stderr)
 
     # run through the BAM records in the query, and calculate how much of
     # the reference is covered by the query.
     print('building coverage', file=sys.stderr)
     with pysam.Samfile(alignments, "rb") as samfile:
-        for record in tqdm(samfile, leave=True):
+        for record in samfile:
 
             if record.qname not in query_seqs:
                 continue
@@ -90,7 +81,6 @@ def bam_coverage(reference, alignments, min_match, query, min_mapq=30, min_len=0
             for pos_read, pos_ref in record.aligned_pairs:
                 if pos_ref:
                     cov[pos_ref] = 1
-    print(file=sys.stderr)
 
     # print out summary statistics for each of the reference.
     coved = {}
@@ -98,13 +88,12 @@ def bam_coverage(reference, alignments, min_match, query, min_mapq=30, min_len=0
     total = 0
     covered = 0
     print('Summing stats', file=sys.stderr)
-    for name in tqdm(covs, leave=True):
+    for name in covs:
         coved[name] = sum(covs[name])
         sizes[name] = float(len(covs[name]))
         covered += coved[name]
         total += sizes[name]
     fraction = covered / float(total or 1)
-    print(file=sys.stderr)
 
     print('total bases in reference:', total)
     print('total ref bases covered :', covered)

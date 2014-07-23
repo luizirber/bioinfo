@@ -38,7 +38,7 @@ setup(
     author='Luiz Irber',
     author_email='luiz@luizirber.org',
     url='https://github.com/luizirber/bioinfo',
-    install_requires=['docopt', 'tqdm'],
+    install_requires=['docopt'],
     license=read("LICENSE"),
     zip_safe=False,
     keywords='bioinfo',

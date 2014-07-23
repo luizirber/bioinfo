@@ -41,12 +41,10 @@ class TestBamConverage(unittest.TestCase):
         self.assertIn('total bases in reference', ret.stdout)
         self.assertIn('total ref bases covered', ret.stdout)
         self.assertIn('fraction', ret.stdout)
-        self.assertNotIn('elapsed', ret.stdout)
 
         self.assertNotIn('total bases in reference', ret.stderr)
         self.assertNotIn('total ref bases covered', ret.stderr)
         self.assertNotIn('fraction', ret.stderr)
-        self.assertIn('elapsed', ret.stderr)
 
         for line in ret.stdout.split('\n'):
             if 'total bases in reference' in line:
