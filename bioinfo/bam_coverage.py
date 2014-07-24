@@ -59,7 +59,7 @@ def bam_coverage(reference, alignments, min_match, min_mapq=30, min_len=0):
     with pysam.Samfile(alignments, "rb") as samfile:
         for record in samfile:
 
-            if len(record.query) < min_len:
+            if len(record.query) < min_match:
                 continue
 
             if record.mapq < min_mapq:
@@ -111,4 +111,4 @@ if __name__ == "__main__":
     query = sys.argv[4]
     min_mapq = int(sys.argv[5])
 
-    bam_coverage(reference, alignments, min_match, query, min_mapq=30)
+    bam_coverage(reference, alignments, min_match, query, min_mapq=min_mapq)

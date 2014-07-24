@@ -18,8 +18,10 @@ class TestBamConverage(unittest.TestCase):
         shutil.copytree(os.path.join(os.path.dirname(__file__), 'data'),
                         os.path.join(self.env.base_path, 'data'))
         self.total = 237
-        self.coved = 57
-        self.fraction = 0.24
+        self.coved = 154
+        self.fraction = 0.6497
+        self.min_match_coved = 115
+        self.min_match_fraction = 0.485
 
     def tearDown(self):
         self.env.clear()
@@ -64,7 +66,22 @@ class TestBamConverage(unittest.TestCase):
         )
         self.assertEqual(result['total'], self.total)
         self.assertEqual(result['covered'], self.coved)
-        self.assertAlmostEqual(result['fraction'], self.fraction, places=2)
+        self.assertAlmostEqual(result['fraction'], self.fraction, places=3)
+
+    def test_min_match(self):
+        from bioinfo import bam_coverage
+
+        result = bam_coverage(
+            os.path.join('tests', 'data', 'bam_ref.fasta'),
+            os.path.join('tests', 'data', 'bam_align.sorted.bam'),
+            45,
+            30
+        )
+        self.assertEqual(result['total'], self.total)
+        self.assertEqual(result['covered'], self.min_match_coved)
+        self.assertAlmostEqual(result['fraction'],
+                               self.min_match_fraction,
+                               places=2)
 
     def test_check_dependencies(self):
         import bioinfo
