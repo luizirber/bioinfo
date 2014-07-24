@@ -32,7 +32,7 @@ def read(fname):
 
 setup(
     name='bioinfo',
-    version="0.1.7",
+    version="0.1.8",
     description='Bioinformatics scripts',
     long_description=read("README.rst"),
     author='Luiz Irber',
