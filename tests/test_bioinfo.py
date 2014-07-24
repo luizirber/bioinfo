@@ -34,7 +34,6 @@ class TestBamConverage(unittest.TestCase):
                            "data/bam_ref.fasta",
                            "data/bam_align.sorted.bam",
                            "10",
-                           "data/bam_query.fasta",
                            "--mapq=30", expect_stderr=True)
         self.assertEquals(ret.returncode, 0)
 
@@ -61,7 +60,6 @@ class TestBamConverage(unittest.TestCase):
             os.path.join('tests', 'data', 'bam_ref.fasta'),
             os.path.join('tests', 'data', 'bam_align.sorted.bam'),
             10,
-            os.path.join('tests', 'data', 'bam_query.fasta'),
             30
         )
         self.assertEqual(result['total'], self.total)
@@ -79,7 +77,6 @@ class TestBamConverage(unittest.TestCase):
                 os.path.join('tests', 'data', 'bam_ref.fasta'),
                 os.path.join('tests', 'data', 'bam_align.sorted.bam'),
                 10,
-                os.path.join('tests', 'data', 'bam_query.fasta'),
                 30
             )
 

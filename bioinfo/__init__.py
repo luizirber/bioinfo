@@ -5,7 +5,7 @@
 Collection of scripts for bioinformatics problems.
 
 Usage:
-  bioinfo bam_coverage <reference> <alignments> <minmatch> <query> [--mapq=<n>] [--minlen=<n>]
+  bioinfo bam_coverage <reference> <alignments> <minmatch> [--mapq=<n>] [--minlen=<n>]
   bioinfo -h | --help
   bioinfo --version
 
@@ -42,7 +42,6 @@ def main():
         bam_coverage(args['<reference>'],
                      args['<alignments>'],
                      int(args['<minmatch>']),
-                     args['<query>'],
                      min_mapq=int(args['--mapq']),
                      min_len=float(args['--minlen']))
 

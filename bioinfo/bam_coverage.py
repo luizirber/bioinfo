@@ -2,11 +2,10 @@
 """
 Usage:
 
-   bam-coverage.py reference.fa query.x.reference.bam minmatch query.fa mapq
+   bam-coverage.py reference.fa query.x.reference.bam minmatch mapq
 
 bam-coverage calculates the fraction of bases in 'reference.fa' that are
-covered by a BAM alignment file, for sequence in 'query.fa' that are
-longer than 'minmatch'.
+covered by sequences in a BAM alignment file that are longer than 'minmatch'.
 
 Original script: https://github.com/ngs-docs/ngs-scripts/blob/master/blast/calc-blast-cover.py
 """
@@ -44,13 +43,8 @@ def check_dependencies():
     sys.exit(1)
 
 
-def bam_coverage(reference, alignments, min_match, query, min_mapq=30, min_len=0):
+def bam_coverage(reference, alignments, min_match, min_mapq=30, min_len=0):
     check_dependencies()
-
-    # load in the query sequences into a list
-    print("reading query", file=sys.stderr)
-    query_seqs = set([r.name for r in screed.open(query)
-                      if len(r.sequence) >= min_match])
 
     # create empty lists representing the total number of bases in the
     # reference
@@ -65,7 +59,7 @@ def bam_coverage(reference, alignments, min_match, query, min_mapq=30, min_len=0
     with pysam.Samfile(alignments, "rb") as samfile:
         for record in samfile:
 
-            if record.qname not in query_seqs:
+            if len(record.query) < min_len:
                 continue
 
             if record.mapq < min_mapq:
@@ -100,7 +94,6 @@ def bam_coverage(reference, alignments, min_match, query, min_mapq=30, min_len=0
     print('fraction                :', fraction)
     print('reference               :', reference)
     print('BAM alignment file      :', alignments)
-    print('query sequences         :', query)
 
     return {
         'total': total,
